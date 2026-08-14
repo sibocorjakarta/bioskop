@@ -36,6 +36,21 @@ func main() {
 
 	log.Println("Database berhasil terkoneksi")
 
+		_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS bioskop (
+			id SERIAL PRIMARY KEY,
+			nama VARCHAR(255) NOT NULL,
+			lokasi VARCHAR(255) NOT NULL,
+			rating DOUBLE PRECISION NOT NULL
+		)
+	`)
+
+	if err != nil {
+		log.Fatal("Gagal membuat tabel bioskop:", err)
+	}
+
+	log.Println("Tabel bioskop siap")
+
 	var currentDB string
 	err = db.QueryRow("SELECT current_database()").Scan(&currentDB)
 	if err != nil {
