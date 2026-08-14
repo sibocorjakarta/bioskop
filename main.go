@@ -17,6 +17,7 @@ func main() {
 	// cara Koneksi PostgreSQL
 	var err error
 
+
 	databaseURL := os.Getenv("DATABASE_URL")
 
 	if databaseURL == "" {
@@ -34,6 +35,23 @@ func main() {
 	}
 
 	log.Println("Database berhasil terkoneksi")
+
+	var currentDB string
+	err = db.QueryRow("SELECT current_database()").Scan(&currentDB)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Database yang digunakan:", currentDB)
+
+	var currentSchema string
+	err = db.QueryRow("SELECT current_schema()").Scan(&currentSchema)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Schema yang digunakan:", currentSchema)
+
 
 	// cara Membuat router Gin
 	router := gin.Default()
