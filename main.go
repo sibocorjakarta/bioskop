@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"database/sql"
 
 	"github.com/gin-gonic/gin"
@@ -41,5 +42,11 @@ func main() {
 	router.DELETE("/delete-data-bioskop/:id", handlers.DeleteBioskop(db))
 
 	// menjalankan server dan menentukan port nya
-	router.Run(":8080")
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "8080"
+	}
+
+	router.Run("0.0.0.0:" + port)
 }
