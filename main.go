@@ -18,6 +18,11 @@ func main() {
 	var err error
 
 	databaseURL := os.Getenv("DATABASE_URL")
+
+	if databaseURL == "" {
+		log.Fatal("DATABASE_URL tidak tersedia")
+	}
+
 	db, err = sql.Open("postgres", databaseURL)
 
 	if err != nil {
@@ -27,6 +32,8 @@ func main() {
 	if err := db.Ping(); err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("Database berhasil terkoneksi")
 
 	// cara Membuat router Gin
 	router := gin.Default()
