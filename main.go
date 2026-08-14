@@ -1,8 +1,9 @@
 package main
 
 import (
-	"os"
 	"database/sql"
+	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
@@ -15,22 +16,17 @@ func main() {
 
 	// cara Koneksi PostgreSQL
 	var err error
-	connStr := "host=localhost port=5432 user=test password=password1234 dbname=bioskop_db sslmode=disable"
 
-	db, err = sql.Open("postgres", connStr)
-
-	if err != nil {
-		panic(err)
-	}
-
-	//  untuk Mengecek koneksi database
-	err = db.Ping()
+	databaseURL := os.Getenv("DATABASE_URL")
+	db, err = sql.Open("postgres", databaseURL)
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	println("Database berhasil terhubung")
+	if err := db.Ping(); err != nil {
+		log.Fatal(err)
+	}
 
 	// cara Membuat router Gin
 	router := gin.Default()
