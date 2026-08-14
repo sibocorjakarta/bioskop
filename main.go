@@ -52,6 +52,21 @@ func main() {
 
 	log.Println("Schema yang digunakan:", currentSchema)
 
+	var tableName string
+
+	err = db.QueryRow(`
+		SELECT table_name
+		FROM information_schema.tables
+		WHERE table_schema = 'public'
+		AND table_name = 'bioskop'
+	`).Scan(&tableName)
+
+	if err != nil {
+		log.Println("Tabel bioskop tidak ditemukan:", err)
+	} else {
+		log.Println("Tabel ditemukan:", tableName)
+	}
+
 
 	// cara Membuat router Gin
 	router := gin.Default()
